@@ -15,45 +15,26 @@ class FamilyTree {
     return this.children.length + 1;
   }
   findMember(member) {
-    if (!member) {
-      return undefined;
+    if ((this.value = member)) {
+      return this;
     }
-    memberFinder(this);
-    function memberFinder(node) {
-      if (!node) {
-        return undefined;
-      }
-      if (node.value === member) {
-        return node;
-      }
-      if (!node.children) {
-        return undefined;
-      }
-
-      for (let i = 0; i < node.children.length; i++) {
-        let nodeFound = memberFinder(node.children[i]);
-        if (nodeFound) {
-          return nodeFound;
-        }
-      }
-    }
+    this.children.forEach(child => {
+      return child.findMember(member);
+    });
     return undefined;
   }
   log() {
-    let counter = 1;
-    let str = "--";
-    let returnStr = "";
+    const str = "--";
+    let string = `${str} ${this.value} \n`;
+    if (this.children) {
+      const strFinder = (arr, adder) => {
+        arr.forEach(child => {
+          string += `--${str}${child.value} `;
+        });
+      };
+    }
 
-    return function myLog(node = this) {
-      returnStr = counter * str + node.value;
-      if (node.children) {
-        for (const child of node.children) {
-          return myLog(child);
-        }
-      }
-
-      console.log(returnStr);
-    }; // console.log("**", this.children[1].children);
+    // console.log("**", this.children[1].children);
     // return `-- ${this.value}`;
   }
 }
